@@ -16,7 +16,7 @@ def check_query(data):
         else:
             return "Okay"
     except Exception as error:
-        return "please provide all the fields, missing " + str(error)
+        return "please fill in all the fields"
 
 @api.route('/questions', methods=["GET", "POST"])
 def question():

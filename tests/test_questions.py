@@ -13,9 +13,10 @@ class BaseTestCase(TestCase):
         self.registraiton = json.dumps(dict(username="lennymanyeki", password='1987lenny'))
         self.client.post('api/v1/registration',data = self.registraiton, content_type='application/json')
         self.client.post('api/v1/auth/login', data= self.registraiton, content_type='application/json')
+        self.question = json.dumps(dict(title="This is a flask question", description="How does one run a flask app"))
     
     def tearDown(self):
-        del self.question
+        self.question = None
     
     def test_create_question(self):
         """
@@ -25,7 +26,7 @@ class BaseTestCase(TestCase):
         data = json.loads(resource.data.decode())
         self.assertEqual(resource.content_type, 'application/json')
         self.assertEqual(resource.status_code, 201)
-        self.assertEqual(data["message"], "Successful.")
+        self.assertEqual(data["message"], "Question Asked Succesfull")
 
     def test_retrieve_question(self):
         """
@@ -36,23 +37,23 @@ class BaseTestCase(TestCase):
         data = json.loads(resource.data.decode())
         self.assertEqual(resource.content_type, 'application/json')
         self.assertEqual(resource.status_code, 200)
-        self.assertEqual(len(data['Questions']), 2)
+        self.assertEqual(len(data['Questions']), 4)
 
     def test_retrieve_specific_question(self):
         """
         Test users can retrieve a specific question
         """                                                                    
         resource = self.client.get('/api/v1/questions/1', data = self.question, content_type='application/json')
-        data = json.loads(resource.data.decode())
+        data = resource.json
         self.assertEqual(resource.content_type, 'application/json')
         self.assertEqual(resource.status_code, 200)
-        self.assertEqual(data['Question']['title'], "Blue chronicles")
+        self.assertEqual(data['title'], "This is a flask question")
 
     def test_missing_title(self):
         """"
         Test for missing title
         """
-        resource = self.client.post('api/v1/questions', data=json.dumps(dict(title="", body="Why blue is awesome?")), content_type='application/json')
+        resource = self.client.post('api/v1/questions', data=json.dumps(dict(title="", description="Why ")), content_type='application/json')
         data = json.loads(resource.data.decode())
         self.assertEqual(resource.status_code, 422)
         self.assertEqual(resource.content_type, 'application/json')
@@ -60,14 +61,14 @@ class BaseTestCase(TestCase):
 
     def test_missing_question_body(self):
         """"
-        Test for wrong login credentials
+        Test for wrong question body
         """
+
         resource = self.client.post('api/v1/questions', data=json.dumps(dict(title="titles", body="")), content_type='application/json')
         data = json.loads(resource.data.decode())
-        self.assertEqual(resource.status_code, 422)
         self.assertEqual(resource.content_type, 'application/json')
-        self.assertEqual(data['message'].strip(), 'Question body cannot be empty')
+        self.assertEqual(resource.status_code, 422)
+        self.assertEqual(data['message'].strip(), 'please fill in all the fields')
 
 
-if __name__ == '__main__':
-    unittest.main()
+

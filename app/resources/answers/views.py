@@ -1,4 +1,4 @@
-from flask import Flask, request, flash, redirect, url_for, jsonify, session
+from flask import Flask, request, flash, redirect, url_for, jsonify, session, abort
 from . import answer_api
 from .answers import Answerslist
 answerObject = Answerslist() 
@@ -22,6 +22,8 @@ def answer(quiz_id):
     """ Method to create answers."""
     data = request.get_json()
     description = data['description']
+    if description == "" or description ==" ":
+        abort (400)
     res = answerObject.post_answer(quiz_id, description)
     return res
 
@@ -32,5 +34,5 @@ def answers(id):
     Method to get answers to a question
     """
     data = answerObject.get_answer_by_quiz_id(id)
-    return data
+    return data,200
     

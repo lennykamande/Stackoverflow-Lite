@@ -21,7 +21,7 @@ class Questionlist(object):
                         'description' : request.json['description'], 
                         'quiz_id' : len(questionslist)+ 1 }
         questionslist.append(dict(self.listsdict))  
-        return jsonify({"message": "Question Asked Succesfull.", "question":questionslist}), 201 
+        return jsonify({"message": "Question Asked Succesfull", "question":questionslist}), 201 
 
     def get_question(self):
         """ 
