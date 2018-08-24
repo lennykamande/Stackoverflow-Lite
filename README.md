@@ -17,10 +17,10 @@ Clone or download the project from git either via terminal using the commands
 		 
 | 	Endpoint                               | Functionality                                                  
 | ---------------------------------------------| -----------------------------------------------|
-| POST api/v1/auth/registration                | Create a user account                          |          
-| POST /api/v1/auth/login                      | Login a user                                   |
-| GET api/v1/auth/users                        | Retrieve the registered users                  |
-| GET /api/v1/auth/users/<int:id>              | Retrieve a specific registered user            |
+| POST api/v1/registration                | Create a user account                          |          
+| POST /api/v1/login                      | Login a user                                   |
+| GET api/v1/users                        | Retrieve the registered users                  |
+| GET /api/v1/users/<int:id>              | Retrieve a specific registered user            |
 | POST /api/v1/questions                       | Create a question                              |
 | GET /api/v1/questions                        | Retrieve posted questions                      |
 | POST /api/v1/questions/<int:id>/answer       | Create an answer to a specific question        |
